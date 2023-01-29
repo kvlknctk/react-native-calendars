@@ -104,7 +104,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     current = '',
     timelineLeftInset
   } = props;
-  
+
   const numberOfDaysCondition = useMemo(() => {
     return numberOfDays && numberOfDays > 1;
   }, [numberOfDays]);
@@ -125,7 +125,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         : arrowsHitSlop,
     [arrowsHitSlop]
   );
-  
+
   useImperativeHandle(ref, () => ({
     onPressLeft,
     onPressRight
@@ -203,16 +203,18 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     }
 
     return (
-      <Fragment>
-        <Text
-          allowFontScaling={false}
-          style={style.current.monthText}
-          testID={`${testID}.title`}
-          {...webProps}
-        >
-          {formatNumbers(month?.toString(monthFormat))}
-        </Text>
-      </Fragment>
+        <TouchableOpacity onPress={() => alert("asd")}>
+          <Fragment>
+            <Text
+                allowFontScaling={false}
+                style={style.current.monthText}
+                testID={`${testID}.title`}
+                {...webProps}
+            >
+              {formatNumbers(month?.toString(monthFormat))}
+            </Text>
+          </Fragment>
+        </TouchableOpacity>
     );
   };
 
@@ -226,8 +228,8 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     const shouldDisable = isLeft ? disableArrowLeft : disableArrowRight;
     const onPress = !shouldDisable ? isLeft ? onPressLeft : onPressRight : undefined;
     const imageSource = isLeft ? require('../img/previous.png') : require('../img/next.png');
-    const renderArrowDirection = isLeft ? 'left' : 'right';   
-      
+    const renderArrowDirection = isLeft ? 'left' : 'right';
+
     return (
       <TouchableOpacity
         onPress={onPress}
