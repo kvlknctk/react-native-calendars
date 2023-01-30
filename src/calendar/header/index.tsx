@@ -43,6 +43,8 @@ export interface CalendarHeaderProps {
   onPressArrowLeft?: (method: () => void, month?: XDate) => void; //TODO: replace with string
   /** Handler which gets executed when press arrow icon right. It receive a callback can go next month */
   onPressArrowRight?: (method: () => void, month?: XDate) => void; //TODO: replace with string
+  /** month press */
+  onMonthPress?: (month?: XDate) => void; //TODO: replace with string
   /** Left & Right arrows. Additional distance outside of the buttons in which a press is detected, default: 20 */
   arrowsHitSlop?: Insets | number;
   /** Disable left arrow */
@@ -89,6 +91,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     renderArrow,
     onPressArrowLeft,
     onPressArrowRight,
+    onMonthPress,
     arrowsHitSlop = 20,
     disableArrowLeft,
     disableArrowRight,
@@ -108,16 +111,21 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const numberOfDaysCondition = useMemo(() => {
     return numberOfDays && numberOfDays > 1;
   }, [numberOfDays]);
+
   const style = useRef(styleConstructor(theme));
+
   const headerStyle = useMemo(() => {
     return [style.current.header, numberOfDaysCondition ? style.current.partialHeader : undefined];
   }, [numberOfDaysCondition]);
+
   const partialWeekStyle = useMemo(() => {
     return [style.current.partialWeek, {paddingLeft: timelineLeftInset}];
   }, [timelineLeftInset]);
+
   const dayNamesStyle = useMemo(() => {
     return [style.current.week, numberOfDaysCondition ? partialWeekStyle : undefined];
   }, [numberOfDaysCondition, partialWeekStyle]);
+
   const hitSlop: Insets | undefined = useMemo(
     () =>
       typeof arrowsHitSlop === 'number'
@@ -125,6 +133,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         : arrowsHitSlop,
     [arrowsHitSlop]
   );
+
 
   useImperativeHandle(ref, () => ({
     onPressLeft,
@@ -146,12 +155,15 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
     return subtractMonth();
   }, [onPressArrowLeft, subtractMonth, month]);
 
+
   const onPressRight = useCallback(() => {
     if (typeof onPressArrowRight === 'function') {
       return onPressArrowRight(addMonth, month);
     }
     return addMonth();
   }, [onPressArrowRight, addMonth, month]);
+
+
 
   const onAccessibilityAction = useCallback((event: AccessibilityActionEvent) => {
     switch (event.nativeEvent.actionName) {
@@ -202,8 +214,9 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
       return customHeaderTitle;
     }
 
+
     return (
-        <TouchableOpacity onPress={() => alert("asd")}>
+        <TouchableOpacity onPress={() => onMonthPress(month)}>
           <Fragment>
             <Text
                 allowFontScaling={false}

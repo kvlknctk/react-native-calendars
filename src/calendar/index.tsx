@@ -45,6 +45,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   showSixWeeks?: boolean;
   /** Handler which gets executed on day press */
   onDayPress?: (date: DateData) => void;
+  /** Handler which gets executed on day press */
+  onMonthPress?: (date: DateData) => void;
   /** Handler which gets executed on day long press */
   onDayLongPress?: (date: DateData) => void;
   /** Handler which gets executed when month changes in calendar */
@@ -82,6 +84,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     onDayPress,
     onDayLongPress,
     onMonthChange,
+    onMonthPress,
     onVisibleMonthsChange,
     disableMonthChange,
     enableSwipeMonths,
@@ -269,6 +272,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
         ref={ref}
         month={currentMonth}
         addMonth={addMonth}
+        onMonthPress={() => onMonthPress()}
         displayLoadingIndicator={shouldDisplayIndicator}
       />
     );
@@ -313,6 +317,7 @@ Calendar.propTypes = {
   hideExtraDays: PropTypes.bool,
   showSixWeeks: PropTypes.bool,
   onDayPress: PropTypes.func,
+  onMonthPress: PropTypes.func,
   onDayLongPress: PropTypes.func,
   onMonthChange: PropTypes.func,
   onVisibleMonthsChange: PropTypes.func,
