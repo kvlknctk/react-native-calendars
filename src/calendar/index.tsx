@@ -272,7 +272,7 @@ const Calendar = (props: CalendarProps & ContextProp) => {
         ref={ref}
         month={currentMonth}
         addMonth={addMonth}
-        onMonthPress={() => onMonthPress()}
+        onMonthPress={(ev) => onMonthPress(ev)}
         displayLoadingIndicator={shouldDisplayIndicator}
       />
     );
